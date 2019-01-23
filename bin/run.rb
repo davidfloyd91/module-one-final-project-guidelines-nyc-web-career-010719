@@ -1,5 +1,4 @@
 require_relative '../config/environment'
+require_all 'lib'
 
-
-
-puts "HELLO WORLD"
+search_by_artist("magritte")
