@@ -19,8 +19,14 @@ seed_loader = Class.new do
     load "#{ActiveRecord::Tasks::DatabaseTasks.db_dir}/seeds.rb"
   end
 end
+
+
+
 DatabaseTasks.seed_loader = seed_loader.new
 load 'active_record/railties/databases.rake'
+
+
+
 
 task :console => :environment do
   Pry.start
