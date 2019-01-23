@@ -12,6 +12,6 @@ end
 
 search_by_artist("magritte")
 
-binding.pry
+# binding.pry
 
 0
