@@ -3,7 +3,7 @@ class CreateArtists < ActiveRecord::Migration[5.0]
     create_table :artists do |t|
       t.string :name # displayname
       t.string :culture
-      t.integer :artist_object_id
+      # t.integer :artist_object_id
     end
   end
 end
