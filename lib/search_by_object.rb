@@ -1,4 +1,7 @@
-input = "blue"  #### this will be user input
+
+
+
+input = "grey"  #### this will be user input
 
 api_result = RestClient::Request.execute(method: :get,
           url: "https://api.harvardartmuseums.org/object",
@@ -13,6 +16,9 @@ OBJECT_DATA = JSON.parse(api_result)["records"]
 
 #### INT WILL BE USER NUMBER CHOICE FROM LIST
 
+def turn_into_array
+  OBJECT_DATA
+end
 
 
 def get_image_artist_name(choice_number)
@@ -26,6 +32,40 @@ end
 def get_image_title(choice_number)
   OBJECT_DATA[choice_number]["title"]
 end
+
+
+#################let me try with artist
+
+
+art_input = "da vinci"  #### this will be user input
+
+api_result2 = RestClient::Request.execute(method: :get,
+          url: "https://api.harvardartmuseums.org/person",
+      headers: {params: {size: 10,
+                         q: "displayname:'#{art_input}'", ### user input
+                         sort: "displayname",
+                         sortorder: "asc",
+                         # fields: "title," "primaryimageurl," "people.name",
+                         apikey: ENV['API_KEY']}},
+      )
+ARTIST_DATA = JSON.parse(api_result2)["records"]
+
+#### INT WILL BE USER NUMBER CHOICE FROM LIST
+
+
+
+# def get_artist_name(choice_number)
+#   ARTIST_DATA[choice_number]["people"][0]["name"]
+# end
+#
+# def umget_image_url(choice_number)
+#   ARTIST_DATA[choice_number]["primaryimageurl"]
+# end
+#
+# def get_image_title(choice_number)
+#   ARTIST_DATA[choice_number]["title"]
+# end
+#
 
 
 
