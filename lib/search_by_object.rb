@@ -10,12 +10,10 @@ api_result = RestClient::Request.execute(method: :get,
                          fields: "title," "primaryimageurl," "people.name",
                          apikey: ENV['API_KEY']}},
       )
-OBJECT_DATA = JSON.parse(api_result)["records"]
+ARTWORK_DATA = JSON.parse(api_result)["records"]
 
 def print_search_results
-  # some iteration magic and puts out the movies in a nice list
-  # films_hash = get_character_movies_from_api("Luke Skywalker")
-  OBJECT_DATA.each.with_index(0) do |data, index|
+  ARTWORK_DATA.each.with_index(0) do |data, index|
     puts "#{index}. " + data['title'][0..100]
     puts "\n"
   end
@@ -26,17 +24,18 @@ print_search_results
 puts "Choose from 0-9 to get more information "
 input2 = gets.chomp.to_i
 
+def get_image_title(i)
+ puts "Title: " + ARTWORK_DATA[i]["title"]
+end
+
 def get_image_artist_name(i)
-  puts "Artist: " + OBJECT_DATA[i]["people"][0]["name"]
+  puts "Artist: " + ARTWORK_DATA[i]["people"][0]["name"]
 end
 
 def get_image_url(i)
-  puts "Image: " + OBJECT_DATA[i]["primaryimageurl"]
+  puts "Image: " + ARTWORK_DATA[i]["primaryimageurl"]
 end
 
-def get_image_title(i)
- puts "Title: " + OBJECT_DATA[i]["title"]
-end
 
 
 # binding.pry
@@ -45,7 +44,7 @@ puts get_image_artist_name(input2)
 puts get_image_url(input2)
 
 def testing_testing(i)
-  imgurl = OBJECT_DATA[i]["primaryimageurl"]
+  imgurl = ARTWORK_DATA[i]["primaryimageurl"]
   system("open -a Safari #{imgurl}")
 end
 
@@ -56,21 +55,21 @@ testing_testing(input2)
 
 "bye!"
 #################let me try with artist
-
-
-art_input = "da vinci"  #### this will be user input
-
-api_result2 = RestClient::Request.execute(method: :get,
-          url: "https://api.harvardartmuseums.org/person",
-      headers: {params: {size: 10,
-                         q: "displayname:'#{art_input}'", ### user input
-                         sort: "displayname",
-                         sortorder: "asc",
-                         # fields: "title," "primaryimageurl," "people.name",
-                         apikey: ENV['API_KEY']}},
-      )
-ARTIST_DATA = JSON.parse(api_result2)["records"]
-
+#
+#
+# art_input = "da vinci"  #### this will be user input
+#
+# api_result2 = RestClient::Request.execute(method: :get,
+#           url: "https://api.harvardartmuseums.org/person",
+#       headers: {params: {size: 10,
+#                          q: "displayname:'#{art_input}'", ### user input
+#                          sort: "displayname",
+#                          sortorder: "asc",
+#                          # fields: "title," "primaryimageurl," "people.name",
+#                          apikey: ENV['API_KEY']}},
+#       )
+# ARTIST_DATA = JSON.parse(api_result2)["records"]
+#
 
 
 #### INT WILL BE USER NUMBER CHOICE FROM LIST
