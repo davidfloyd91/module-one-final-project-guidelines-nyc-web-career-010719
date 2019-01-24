@@ -1,16 +1,62 @@
-#
-# puts "Hello! Welcome to the Harvard Museum of Art API Querier"
-#
-# puts "Enter a keyword to search for: "
-#
-# input = gets.chomp
-#
-# print_search_results
-#
-# puts "Choose from 0-9 to get more information "
-# input2 = gets.chomp.to_i
-#
-# puts_image_info(input2)
+require_relative './search_by_object'
+
+
+puts "Hello! Welcome to the Harvard Museum of Art API Querier"
+
+puts "Enter a keyword to search for: "
+
+input = gets.chomp
+
+artwork_api_result = RestClient::Request.execute(method: :get,
+          url: "https://api.harvardartmuseums.org/object",
+      headers: {params: {size: 10,
+                         q: "title:'#{input}'", ### user input
+                         sort: "title",
+                         sortorder: "asc",
+                         fields: "title," "primaryimageurl," "people.name",
+                         apikey: ENV['API_KEY']}},
+      )
+artwork_array = JSON.parse(artwork_api_result)["records"]
+
+
+print_artwork_results(artwork_array)
+
+puts "Choose from 0-9 to get more information "
+input2 = gets.chomp.to_i
+
+puts get_image_title(artwork_array, input2)
+puts get_image_artist_name(artwork_array, input2)
+puts get_image_url(artwork_array, input2)
+
+puts "Do you want to open the image?"
+
+open_image(artwork_array, input2)
+
+puts "Search by artist name. "
+artist_input = gets.chomp.to_i
+
+class ArtistAPIResult
+  artist_api_result = RestClient::Request.execute(method: :get,
+            url: "https://api.harvardartmuseums.org/person",
+        headers: {params: {size: 10,
+                           q: "displayname:'#{artist_input}'", ### user input
+                           sort: "displayname",
+                           sortorder: "asc",
+                           fields: "displayname," "culture," "url",
+                           apikey: ENV['API_KEY']}},
+        )
+
+end
+
+artist_array = JSON.parse(artist_api_result)["records"]
+
+
+get_artist_name(artist_array, art_input2)
+
+get_artist_culture(artist_array, art_input2)
+
+get_artist_url(artist_array, art_input2)
+
 #
 #
 # def help
