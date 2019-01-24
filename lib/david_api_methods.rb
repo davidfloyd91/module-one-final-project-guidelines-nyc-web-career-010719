@@ -34,16 +34,16 @@ end
 
 #####
 
-def search_by_culture(culture)
+def get_artist_url(artist)
   api_result = RestClient::Request.execute(method: :get,
       url: "https://api.harvardartmuseums.org/person",
-      headers: {params: {size: 10,
-                         q: "culture:'#{culture}'",
+      headers: {params: {size: 1,
+                         q: "id:'#{artist.api_id}'",
                          sort: "displayname",
                          sortorder: "asc",
                          # fields: "displayname",
                          apikey: ENV['API_KEY']}},)
-  response_hash = JSON.parse(api_result)["records"]
+  response_hash = JSON.parse(api_result)["records"][0]["url"]
 end
 
 # culture = search_by_artist_culture("van gogh")
