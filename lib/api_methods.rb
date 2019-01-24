@@ -10,7 +10,7 @@ def search_by_artist(artist)
 response_hash = JSON.parse(api_result)["records"]
 end
 
-search_by_artist("magritte")
+# search_by_artist("magritte")
 
 # binding.pry
 

@@ -1,7 +1,11 @@
+####################### obect obtainment
+
+#
 puts "Enter a keyword to search for: "
 input = gets.chomp
+artwork_array = []
 
-api_result = RestClient::Request.execute(method: :get,
+artwork_api_result = RestClient::Request.execute(method: :get,
           url: "https://api.harvardartmuseums.org/object",
       headers: {params: {size: 10,
                          q: "title:'#{input}'", ### user input
@@ -10,163 +14,101 @@ api_result = RestClient::Request.execute(method: :get,
                          fields: "title," "primaryimageurl," "people.name",
                          apikey: ENV['API_KEY']}},
       )
-ARTWORK_DATA = JSON.parse(api_result)["records"]
+artwork_array = JSON.parse(artwork_api_result)["records"]
 
-def print_search_results
-  ARTWORK_DATA.each.with_index(0) do |data, index|
+
+def print_search_results(arr)
+  arr.each.with_index(0) do |data, index|
     puts "#{index}. " + data['title'][0..100]
     puts "\n"
   end
 end
 
-print_search_results
+
+print_search_results(artwork_array)
 
 puts "Choose from 0-9 to get more information "
-input2 = gets.chomp.to_i
+ input2 = gets.chomp.to_i
 
-def get_image_title(i)
- puts "Title: " + ARTWORK_DATA[i]["title"]
+def get_image_artist_name(arr, i)
+  puts "Artist: " + arr[i]["people"][0]["name"]
 end
 
-def get_image_artist_name(i)
-  puts "Artist: " + ARTWORK_DATA[i]["people"][0]["name"]
+def get_image_url(arr, i)
+  puts "Image: " + arr[i]["primaryimageurl"]
 end
 
-def get_image_url(i)
-  puts "Image: " + ARTWORK_DATA[i]["primaryimageurl"]
+def get_image_title(arr, i)
+ puts "Title: " + arr[i]["title"]
 end
 
 
 
 # binding.pry
-puts get_image_title(input2)
-puts get_image_artist_name(input2)
-puts get_image_url(input2)
+puts get_image_title(artwork_array, input2)
+puts get_image_artist_name(artwork_array, input2)
+puts get_image_url(artwork_array, input2)
 
-def testing_testing(i)
-  imgurl = ARTWORK_DATA[i]["primaryimageurl"]
+puts "Do you want to open the image?"
+
+def testing_testing(arr, i)
+  imgurl = arr[i]["primaryimageurl"]
   system("open -a Safari #{imgurl}")
 end
 
-testing_testing(input2)
+testing_testing(artwork_array, input2)
 
 
+
+################SAME THING WITH ARTIST
+
+
+
+puts "Search by artist name"
+art_input = gets.chomp  #### this will be user input
+
+artist_api_result = RestClient::Request.execute(method: :get,
+          url: "https://api.harvardartmuseums.org/person",
+      headers: {params: {size: 10,
+                         q: "displayname:'#{art_input}'", ### user input
+                         sort: "displayname",
+                         sortorder: "asc",
+                         fields: "displayname," "culture," "url",
+                         apikey: ENV['API_KEY']}},
+      )
+artist_array = JSON.parse(artist_api_result)["records"]
+
+def print_search_results(arr)
+  arr.each.with_index(0) do |data, index|
+    puts "#{index}. " + data['displayname']
+    puts "\n"
+  end
+end
+
+### INT WILL BE USER NUMBER CHOICE FROM LIST
+
+print_search_results(artist_array)
+#
+puts "Choose from 0-9 to get more information "
+ art_input2 = gets.chomp.to_i
+
+
+def get_artist_name(arr, i)
+  arr[i]["displayname"]
+end
+
+def get_artist_culture(arr, i)
+  arr[i]["culture"]
+end
+
+def get_artist_url(arr, i)
+  arr[i]["url"]
+end
+
+puts get_artist_name(artist_array, art_input2)
+puts get_artist_culture(artist_array, art_input2)
+puts get_artist_url(artist_array, art_input2)
+
+
+puts "bye !"
 # binding.pry
-
-"bye!"
-#################let me try with artist
-#
-#
-# art_input = "da vinci"  #### this will be user input
-#
-# api_result2 = RestClient::Request.execute(method: :get,
-#           url: "https://api.harvardartmuseums.org/person",
-#       headers: {params: {size: 10,
-#                          q: "displayname:'#{art_input}'", ### user input
-#                          sort: "displayname",
-#                          sortorder: "asc",
-#                          # fields: "title," "primaryimageurl," "people.name",
-#                          apikey: ENV['API_KEY']}},
-#       )
-# ARTIST_DATA = JSON.parse(api_result2)["records"]
-#
-
-
-#### INT WILL BE USER NUMBER CHOICE FROM LIST
-
-
-
-# def get_artist_name(choice_number)
-#   ARTIST_DATA[choice_number]["people"][0]["name"]
-# end
-#
-# def umget_image_url(choice_number)
-#   ARTIST_DATA[choice_number]["primaryimageurl"]
-# end
-#
-# def get_image_title(choice_number)
-#   ARTIST_DATA[choice_number]["title"]
-# end
-#
-
-
-
-#
-#
-# def get_character_movies_from_api(character)
-#   #make the web request
-#
-#   # uri = URI('http://www.swapi.co/api/people/')
-#   all_characters = RestClient.get('http://www.swapi.co/api/people/')
-#   character_hash = JSON.parse(all_characters)
-#   character_data = character_hash["results"].find { |data| data["name"] == character }
-#   film_urls = character_data["films"]
-#   film_data = film_urls.collect { |data| JSON.parse(RestClient.get(data)) }
-#   film_data
-#   # iterate over the character hash to find the collection of `films` for the given
-#   #   `character`
-#   # collect those film API urls, make a web request to each URL to get the info
-#   #  for that film
-#   # return value of this method should be collection of info about each film.
-#   #  i.e. an array of hashes in which each hash reps a given film
-#   # this collection will be the argument given to `parse_character_movies`
-#   #  and that method will do some nice presentation stuff: puts out a list
-#   #  of movies by title. play around with puts out other info about a given film.
-# end
-#
-# def parse_character_movies(films_hash)
-#   # some iteration magic and puts out the movies in a nice list
-#   # films_hash = get_character_movies_from_api("Luke Skywalker")
-#   films_hash.each.with_index(1) do |data, index|
-#     puts "#{index} " + data['title']
-#   end
-# end
-#
-# def show_character_movies(character)
-#   films_hash = get_character_movies_from_api(character)
-#   parse_character_movies(films_hash)
-#   # binding.pry
-# end
-#
-#
-#
-#
-# def find_character_hash(response_hash, character_name)
-#   response_hash["results"].find do |character|
-#     character["name"].downcase == character_name
-#   end
-# end
-#
-# def find_film_hash(response_hash, film_title)
-#   response_hash["results"].find do |film|
-#     film["title"].downcase == film_title
-#   end
-# end
-#
-# def get_film_info(film_urls)
-#   film_urls.map do |film|
-#     film_string = RestClient.get(film)
-#     JSON.parse(film_string)
-#   end
-# end
-#
-# def get_character_info(character_urls)
-#   character_urls.map do |character|
-#     character_string = RestClient.get(character)
-#     JSON.parse(character_string)
-#   end
-# end
-#
-# def get_character_movies_from_api(character_name)
-#   #make the web request
-#   response_string = RestClient.get('http://www.swapi.co/api/people/')
-#   response_hash = JSON.parse(response_string)
-#   character_hash = find_character_hash(response_hash, character_name)
-#   get_film_info(character_hash["films"])
-# end
-
-
-#
-# binding.pry
-#
-# search_by_object("blue")

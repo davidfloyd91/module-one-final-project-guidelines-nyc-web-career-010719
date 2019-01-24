@@ -1,5 +1,4 @@
 require 'bundler/setup'
-# require 'sinatra-activerecord'
 require 'sqlite3'
 require 'pry'
 require 'require_all'
@@ -7,7 +6,7 @@ require 'dotenv'
 require 'json'
 require 'rest-client'
 require 'active_record'
-require 'open-uri'
+# require 'open-uri'
 
 # require 'uri'
 
