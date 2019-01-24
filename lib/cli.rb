@@ -22,20 +22,25 @@ def menu
   puts "Please choose from the options below:\n1. Search by artist\n2. Search by artwork\n3. Access saved artists\n4. Access saved artworks\n5. Exit"
   choice = obtain.to_i
   if choice == 1
-    puts "Please enter the name of an artist"
+    puts "Please enter the name of an artist."
     artist_search_choice = search_by_artist(obtain)
     puts "Please choose an artist using corresponding number."
     display_artist_info(artist_search_choice, obtain.to_i)
   elsif choice == 2
-    search_by_artwork(obtain)
+    puts "Please enter the title of an artwork or a keyword."
+    artwork_search_choice = search_by_artwork(obtain.to_i)
+    puts "Please choose an artwork using corresponding number."
+    display_artwork_info(artwork_search_choice, obtain.to_i)
   elsif choice == 3
+    display_saved_artists($user.artists)
   elsif choice == 4
+    display_saved_artwork($user.artworks)
   elsif choice == 5
-
+    exit
   else
     puts "Sorry, I do not understand"
     menu
-end
+  end
 end
 
 def run_program
@@ -44,17 +49,6 @@ def run_program
   menu
 end
 
-
-# puts "Choose from 0-9 to get more information "
-input2 = 1   #gets.chomp.to_i
-
-# puts get_image_title(artwork_array, input2)
-# puts get_image_artist_name(artwork_array, input2)
-# puts get_image_url(artwork_array, input2)
-#
-# puts "Do you want to open the image?"
-#
-# open_image(artwork_array, input2)
 
 def search_by_artist(name)
   artist_api_result = RestClient::Request.execute(method: :get,
@@ -72,6 +66,8 @@ def search_by_artist(name)
       end
     print_artist_results(fav_artists)
     return fav_artists
+    binding.pry
+
 end
 
 def search_by_artwork(title)
@@ -89,22 +85,8 @@ def search_by_artwork(title)
         artwork["primaryimageurl"] != nil
       end
     print_artwork_results(fav_artworks)
+    return fav_artworks
 end
-
-
-
-
-# puts "Choose 0-9 to get more information."
-artist_input2 = 1
-
-
-# puts get_artist_name(artist_array, artist_input2)
-# puts get_artist_culture(artist_array, artist_input2)
-# puts get_artist_url(artist_array, artist_input2)
-
-puts "bye!"
-
-
 
 ############### SAVE TO DB METHODS #############
 
@@ -146,6 +128,14 @@ def display_artist_info(arr, i)
   puts "URL: " + arr[i]["url"]
 end
 
+def display_saved_artists(arr)
+  arr.each.with_index(0) do |arr, index|
+    puts "#{index}. #{arr.name}\n   #{arr.culture}"
+    puts "\n"
+end
+end
+
+
 ##### ARTWORK METHODS ######
 
   def print_artwork_results(arr)
@@ -161,11 +151,18 @@ end
     puts "Image: " + arr[i]["primaryimageurl"]
   end
 
+  def display_saved_artwork(arr)
+    arr.each.with_index(0) do |arr, index|
+      puts "#{index}. Title: #{arr.title[0..100]}\n   Artist:  #{arr.artist}\n   URL: #{arr.image_url}"
+      puts "\n"
+    end
+  end
+
   def open_image(arr, i)
     imgurl = arr[i]["primaryimageurl"]
     system("open -a Safari #{imgurl}")
   end
 
-
-
 binding.pry
+
+puts "bye!"
