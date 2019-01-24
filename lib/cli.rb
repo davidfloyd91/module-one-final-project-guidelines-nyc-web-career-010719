@@ -1,5 +1,4 @@
-require_relative './search_by_object'
-
+require_relative './api_methods'
 
 puts "Hello! Welcome to the Harvard Museum of Art API Querier"
 
@@ -18,7 +17,6 @@ artwork_api_result = RestClient::Request.execute(method: :get,
       )
 artwork_array = JSON.parse(artwork_api_result)["records"]
 
-
 print_artwork_results(artwork_array)
 
 puts "Choose from 0-9 to get more information "
@@ -33,29 +31,30 @@ puts "Do you want to open the image?"
 open_image(artwork_array, input2)
 
 puts "Search by artist name. "
-artist_input = gets.chomp.to_i
+artist_input = gets.chomp
 
-class ArtistAPIResult
-  artist_api_result = RestClient::Request.execute(method: :get,
-            url: "https://api.harvardartmuseums.org/person",
-        headers: {params: {size: 10,
-                           q: "displayname:'#{artist_input}'", ### user input
-                           sort: "displayname",
-                           sortorder: "asc",
-                           fields: "displayname," "culture," "url",
-                           apikey: ENV['API_KEY']}},
-        )
-
-end
-
+artist_api_result = RestClient::Request.execute(method: :get,
+          url: "https://api.harvardartmuseums.org/person",
+      headers: {params: {size: 10,
+                         q: "displayname:'#{artist_input}'", ### user input
+                         sort: "displayname",
+                         sortorder: "asc",
+                         fields: "displayname," "culture," "url",
+                         apikey: ENV['API_KEY']}},
+      )
 artist_array = JSON.parse(artist_api_result)["records"]
 
+print_artist_results(artist_array)
 
-get_artist_name(artist_array, art_input2)
+puts "Choose 0-9 to get more information."
+artist_input2 = gets.chomp.to_i
 
-get_artist_culture(artist_array, art_input2)
 
-get_artist_url(artist_array, art_input2)
+puts get_artist_name(artist_array, artist_input2)
+puts get_artist_culture(artist_array, artist_input2)
+puts get_artist_url(artist_array, artist_input2)
+
+puts "bye!"
 
 #
 #
