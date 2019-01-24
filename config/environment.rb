@@ -6,9 +6,7 @@ require 'dotenv'
 require 'json'
 require 'rest-client'
 require 'active_record'
-# require 'open-uri'
 
-# require 'uri'
 
 Bundler.require
 Dotenv.load

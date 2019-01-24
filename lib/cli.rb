@@ -16,8 +16,11 @@ artwork_api_result = RestClient::Request.execute(method: :get,
                          apikey: ENV['API_KEY']}},
       )
 artwork_array = JSON.parse(artwork_api_result)["records"]
+fav_artworks = artwork_array.select do |artwork|
+  artwork["primaryimageurl"] != nil
+end
 
-print_artwork_results(artwork_array)
+print_artwork_results(fav_artworks)
 
 puts "Choose from 0-9 to get more information "
 input2 = gets.chomp.to_i
@@ -39,7 +42,7 @@ artist_api_result = RestClient::Request.execute(method: :get,
                          q: "displayname:'#{artist_input}'", ### user input
                          sort: "displayname",
                          sortorder: "asc",
-                         fields: "displayname," "culture," "url",
+                         # fields: "displayname," "culture," "url",
                          apikey: ENV['API_KEY']}},
       )
 artist_array = JSON.parse(artist_api_result)["records"]
