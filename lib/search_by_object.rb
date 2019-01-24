@@ -1,7 +1,5 @@
-
-
-
-input = "grey"  #### this will be user input
+puts "Enter a keyword to search for: "
+input = gets.chomp
 
 api_result = RestClient::Request.execute(method: :get,
           url: "https://api.harvardartmuseums.org/object",
@@ -14,26 +12,49 @@ api_result = RestClient::Request.execute(method: :get,
       )
 OBJECT_DATA = JSON.parse(api_result)["records"]
 
-#### INT WILL BE USER NUMBER CHOICE FROM LIST
+def print_search_results
+  # some iteration magic and puts out the movies in a nice list
+  # films_hash = get_character_movies_from_api("Luke Skywalker")
+  OBJECT_DATA.each.with_index(0) do |data, index|
+    puts "#{index}. " + data['title'][0..100]
+    puts "\n"
+  end
+end
 
-def turn_into_array
-  OBJECT_DATA
+print_search_results
+
+puts "Choose from 0-9 to get more information "
+input2 = gets.chomp.to_i
+
+def get_image_artist_name(i)
+  puts "Artist: " + OBJECT_DATA[i]["people"][0]["name"]
+end
+
+def get_image_url(i)
+  puts "Image: " + OBJECT_DATA[i]["primaryimageurl"]
+end
+
+def get_image_title(i)
+ puts "Title: " + OBJECT_DATA[i]["title"]
 end
 
 
-def get_image_artist_name(choice_number)
-  OBJECT_DATA[choice_number]["people"][0]["name"]
+# binding.pry
+puts get_image_title(input2)
+puts get_image_artist_name(input2)
+puts get_image_url(input2)
+
+def testing_testing(i)
+  imgurl = OBJECT_DATA[i]["primaryimageurl"]
+  system("open -a Safari #{imgurl}")
 end
 
-def get_image_url(choice_number)
-  OBJECT_DATA[choice_number]["primaryimageurl"]
-end
-
-def get_image_title(choice_number)
-  OBJECT_DATA[choice_number]["title"]
-end
+testing_testing(input2)
 
 
+# binding.pry
+
+"bye!"
 #################let me try with artist
 
 
@@ -49,6 +70,8 @@ api_result2 = RestClient::Request.execute(method: :get,
                          apikey: ENV['API_KEY']}},
       )
 ARTIST_DATA = JSON.parse(api_result2)["records"]
+
+
 
 #### INT WILL BE USER NUMBER CHOICE FROM LIST
 
@@ -144,7 +167,7 @@ ARTIST_DATA = JSON.parse(api_result2)["records"]
 # end
 
 
-
-binding.pry
-
-search_by_object("blue")
+#
+# binding.pry
+#
+# search_by_object("blue")
