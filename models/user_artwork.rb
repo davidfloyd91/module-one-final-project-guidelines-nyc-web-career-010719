@@ -1,4 +1,4 @@
 class UserArtwork < ActiveRecord::Base
-  belongs_to :users
-  belongs_to :artworks
+  belongs_to :user
+  belongs_to :artwork
 end
