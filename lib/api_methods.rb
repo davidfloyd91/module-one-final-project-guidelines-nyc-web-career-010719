@@ -1,11 +1,13 @@
+# basically obsolete
+
 def search_by_artist(artist)
   api_result = RestClient::Request.execute(method: :get,
       url: "https://api.harvardartmuseums.org/person",
-      headers: {params: {size: 100,
+      headers: {params: {size: 10,
                          q: "displayname:'#{artist}'",
                          sort: "displayname",
                          sortorder: "asc",
-                         fields: "displayname",
+                         # fields: "displayname",
                          apikey: ENV['API_KEY']}},)
 response_hash = JSON.parse(api_result)["records"]
 end
