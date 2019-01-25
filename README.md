@@ -18,7 +18,7 @@ Update artwork title in profile
 Delete artwork from profile
 
 ## To Install:
-Obtain an API access token from the Harvard Art Museum's <a href="https://www.harvardartmuseums.org/collections/api">website</a>
+Obtain an API access token from the Harvard Art Museum's <a href="https://www.harvardartmuseums.org/collections/api">website</a>.
 
 Fork and clone this repository
 Run `bundle install` in terminal
