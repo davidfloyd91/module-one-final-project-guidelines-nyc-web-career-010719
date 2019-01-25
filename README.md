@@ -18,7 +18,7 @@ Update artwork title in profile
 Delete artwork from profile
 
 ## To Install:
-Obtain an API access token from the Harvard Art Museum's <a href="https://www.harvardartmuseums.org/collections/api">website</a>.
+Obtain an API access token from the Harvard Art Museum's <a href="https://www.harvardartmuseums.org/collections/api" target="_blank">website</a>.
 
 Fork and clone this repository
 Run `bundle install` in terminal
@@ -29,6 +29,6 @@ Run `ruby bin/run.rb` to run the program
 We welcome contributions from outside contributors. Feel free to submit a pull request describing any proposed improvements.
 
 ## License:
-This software is available under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
+This software is available under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.
 
-Please also refer to the terms of use in the Harvard Art Museum API's <a href="https://github.com/harvardartmuseums/api-docs/blob/master/README.md">documentation</a>.
+Please also refer to the terms of use in the Harvard Art Museum API's <a href="https://github.com/harvardartmuseums/api-docs/blob/master/README.md" target="_blank">documentation</a>.
