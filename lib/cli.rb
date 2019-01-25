@@ -63,12 +63,33 @@ def menu
 
   elsif choice == 4
     saved_artwork_result = display_saved_artwork($user.artworks)
-    puts "Please choose an artwork using corresponding number to open its URL."
-    saved_artwork_choice = obtain.to_i
-    $current_artwork = saved_artwork_result[saved_artwork_choice]
-    url = $current_artwork.image_url
-    system("open -a Safari #{url}")
+    puts "Please choose from the options below:\n1. Open an artwork's URL\n2. Delete an artwork"
+    artwork_action_choice = obtain.to_i
+      if artwork_action_choice == 1
+        puts "Please choose an artwork using corresponding number."
+        saved_artwork_choice = obtain.to_i
+        # binding.pry
+        $current_artwork = saved_artwork_result[saved_artwork_choice]
+        system("open -a Safari #{$current_artwork.image_url}")
+      elsif artwork_action_choice == 2
+        puts "Please choose an artwork using corresponding number."
+        saved_artwork_choice = obtain.to_i
+        $current_artwork = saved_artwork_result[saved_artwork_choice]
+        $current_artwork.destroy
+      else
+        puts "\nSorry, I do not understand ; (."
+      end
     menu
+
+
+
+
+
+    # saved_artwork_choice = obtain.to_i
+    # $current_artwork = saved_artwork_result[saved_artwork_choice]
+    # url = $current_artwork.image_url
+    # system("open -a Safari #{url}")
+    # menu
 
   elsif choice == 5
     "Goodbye!"
