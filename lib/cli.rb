@@ -5,7 +5,7 @@ require_relative '../config/environment.rb'
 $user = nil
 
 def welcome
-  puts "Welcome to the Harvard Museum API Querier!"
+  puts "Welcome to the Harvard Art Museum API Querier!"
 end
 
 def obtain
@@ -18,14 +18,14 @@ def get_user
 end
 
 def menu
-  puts "Welcome #{$user.name}!"
+  puts "Hi #{$user.name}!"
   puts "\nPlease choose from the options below:\n1. Search by artist\n2. Search by artwork\n3. Access saved artists\n4. Access saved artworks\n5. Exit"
   choice = obtain.to_i
 
   if choice == 1
     puts "\nPlease enter the name of an artist."
     artist_search_result = search_by_artist(obtain)
-    puts "Please choose an artist using corresponding number."
+    puts "Please choose an artist using the corresponding number."
     artist_choice = obtain.to_i
     $current_artist = artist_search_result[artist_choice]
     display_artist_info(artist_search_result, artist_choice)
@@ -34,7 +34,7 @@ def menu
   elsif choice == 2
     puts "\nPlease enter the title of an artwork or a keyword."
     artwork_search_result = search_by_artwork(obtain)
-    puts "Please choose an artwork using corresponding number."
+    puts "Please choose an artwork using the corresponding number."
     artwork_choice = obtain.to_i
     $current_artwork = artwork_search_result[artwork_choice]
     display_artwork_info(artwork_search_result, artwork_choice)
@@ -42,20 +42,25 @@ def menu
 
   elsif choice == 3
     saved_artist_result = display_saved_artists($user.artists)
-    puts "Please choose from the options below:\n1. Open an artist's URL\n2. Delete an artist"
+    if saved_artist_result == []
+      puts "You do not have any saved artists."
+      menu
+    end
+    puts "Please choose from the options below:\n1. Open an artist's URL\n2. Delete an artist\n3. Return to main menu"
     artist_action_choice = obtain.to_i
       if artist_action_choice == 1
-        puts "Please choose an artist using corresponding number."
+        puts "Please choose an artist using the corresponding number."
         saved_artist_choice = obtain.to_i
-        # binding.pry
         $current_artist = saved_artist_result[saved_artist_choice]
         url = get_artist_url($current_artist)
         system("open -a Safari #{url}")
       elsif artist_action_choice == 2
-        puts "Please choose an artist using corresponding number."
+        puts "Please choose an artist using the corresponding number."
         saved_artist_choice = obtain.to_i
         $current_artist = saved_artist_result[saved_artist_choice]
         $current_artist.destroy
+      elsif artist_action_choice == 3
+        menu
       else
         puts "\nSorry, I do not understand ; (."
       end
@@ -63,23 +68,38 @@ def menu
 
   elsif choice == 4
     saved_artwork_result = display_saved_artwork($user.artworks)
-    puts "Please choose from the options below:\n1. Open an artwork's URL\n2. Delete an artwork"
-    artwork_action_choice = obtain.to_i
-      if artwork_action_choice == 1
-        puts "Please choose an artwork using corresponding number."
-        saved_artwork_choice = obtain.to_i
-        # binding.pry
-        $current_artwork = saved_artwork_result[saved_artwork_choice]
-        system("open -a Safari #{$current_artwork.image_url}")
-      elsif artwork_action_choice == 2
-        puts "Please choose an artwork using corresponding number."
-        saved_artwork_choice = obtain.to_i
-        $current_artwork = saved_artwork_result[saved_artwork_choice]
-        $current_artwork.destroy
-      else
-        puts "\nSorry, I do not understand ; (."
+    if saved_artwork_result == []
+      puts "You do not have any saved artworks."
+      menu
+    else
+      puts "Please choose from the options below:\n1. Open an artwork's URL\n2. Delete an artwork\n3. Update an artwork title\n4. Return to main menu"
+      artwork_action_choice = obtain.to_i
+        if artwork_action_choice == 1
+          puts "Please choose an artwork using the corresponding number."
+          saved_artwork_choice = obtain.to_i
+          $current_artwork = saved_artwork_result[saved_artwork_choice]
+          system("open -a Safari #{$current_artwork.image_url}")
+        elsif artwork_action_choice == 2
+          puts "Please choose an artwork using the corresponding number."
+          saved_artwork_choice = obtain.to_i
+          $current_artwork = saved_artwork_result[saved_artwork_choice]
+          $current_artwork.destroy
+        elsif artwork_action_choice == 3
+          puts "Please choose an artwork using the corresponding number."
+          saved_artwork_choice = obtain.to_i
+          $current_artwork = saved_artwork_result[saved_artwork_choice]
+          puts "Please enter an updated title."
+          user_title = obtain
+          $current_artwork.title = user_title
+          $current_artwork.save
+          menu
+        elsif artwork_action_choice == 4
+          menu
+        else
+          puts "\nSorry, I do not understand ; (."
+        end
       end
-    menu
+      menu
 
 
 
@@ -108,7 +128,7 @@ def artist_menu
       artist_menu
     elsif choice == 2
       culture_search_result = search_by_culture($current_artist["culture"])
-      puts "Please choose an artist using corresponding number."
+      puts "Please choose an artist using the corresponding number."
       culture_choice = obtain.to_i
       $current_artist = culture_search_result[culture_choice]
       display_artist_info(culture_search_result, culture_choice)
@@ -121,8 +141,8 @@ def artist_menu
     else
       "\nSorry, I do not understand ; (."
       artist_menu
-  end
-  end
+   end
+ end
 
 def artwork_menu
   puts "\nPlease choose from the options below:\n1. Open image\n2. Save artwork to profile\n3. Return to main menu"
@@ -139,7 +159,6 @@ def artwork_menu
       "\nSorry, I do not understand ; (."
       artwork_menu
   end
-
 end
 
 def run_program
@@ -189,8 +208,8 @@ def search_by_culture(culture)
       url: "https://api.harvardartmuseums.org/person",
       headers: {params: {size: 10,
                          q: "culture:'#{culture}'",
-                         sort: "displayname",
-                         sortorder: "asc",
+                         sort: "objectcount",
+                         sortorder: "desc",
                          # fields: "displayname",
                          apikey: ENV['API_KEY']}},)
      artist_array = JSON.parse(api_result)["records"]
@@ -199,7 +218,6 @@ def search_by_culture(culture)
      end
    print_artist_results(fav_artists)
    return fav_artists
-   binding.pry
 end
 
 def get_artist_url(artist)
@@ -211,7 +229,6 @@ def get_artist_url(artist)
                          sortorder: "asc",
                          # fields: "displayname",
                          apikey: ENV['API_KEY']}},)
-                         binding.pry
   url = JSON.parse(api_result)["records"][0]["url"]
 end
 
@@ -295,5 +312,5 @@ end
     system("open -a Safari #{imgurl}")
   end
 
-binding.pry
+
   run_program
