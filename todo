@@ -1,0 +1,46 @@
+User experience
+
+Open, welcome page. Options given:
+Log in or Enter name (saves to db)
+
+Welcome Menu
+1-search by artist
+2-search by artwork
+3-access saved artists
+4-access saved artworks
+5-exit
+
+
+search by artist
+  takes input, pushes through artist api search methods
+  gives user 0-9 options of names
+  name is chosen, user is given bio info, then options to
+    1-save to db
+      a-takes artist hash, saves to db using save_to_db methods
+    2-open artist webpage
+    3-discover similar artists?
+    4-return to main menu
+
+search by artwork
+  takes input, pushes through artwork api search methods
+  gives user 0-9 options of artworks based on keyword given
+  title is chosen, user is given info, then options to
+    1-save to db
+      a-takes artwork hash, saves to db using save_to_db methods
+    2-open image url
+    3-return to main menu
+
+access saved artists
+  list of saved artists, can choose by number. from there:
+
+  1-open artist webpage
+  2-discover similar artists?
+  3-return to main menu
+
+access saved artworks
+    list of saved artworks, can choose by number. from there:
+
+    1-open image url
+    2-return to main menu
+
+return to main menu
