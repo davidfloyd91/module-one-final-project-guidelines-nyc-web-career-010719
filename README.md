@@ -18,17 +18,22 @@ Update artwork title in profile
 Delete artwork from profile
 
 ## To Install:
-Obtain an API access token from the Harvard Art Museum's <a href="https://www.harvardartmuseums.org/collections/api">website</a>
+Obtain an API access token from the Harvard Art Museum's [website] (https://www.harvardartmuseums.org/collections/api).
 
 Fork and clone this repository
 Run `bundle install` in terminal
 Run `rake db:migrate` in terminal to create local database
 Run `ruby bin/run.rb` to run the program
 
+## Known Bugs:
+In some cases, after saving an artist or artwork, the user must log out and log back in to access it.
+
+From the main menu, it is not possible to exit the program by entering `exit`. The user must enter `5` (the "exit" option) instead.
+
 ## Contributor's Guide:
 We welcome contributions from outside contributors. Feel free to submit a pull request describing any proposed improvements.
 
 ## License:
-This software is available under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
+This software is available under the [MIT License] (https://opensource.org/licenses/MIT).
 
-Please also refer to the terms of use in the Harvard Art Museum API's <a href="https://github.com/harvardartmuseums/api-docs/blob/master/README.md">documentation</a>.
+Please also refer to the terms of use in the Harvard Art Museum API's [documentation] (https://github.com/harvardartmuseums/api-docs/blob/master/README.md).
