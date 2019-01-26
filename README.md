@@ -18,7 +18,7 @@ Update artwork title in profile
 Delete artwork from profile
 
 ## To Install:
-Obtain an API access token from the Harvard Art Museum's [website] (https://www.harvardartmuseums.org/collections/api).
+Obtain an API access token from the Harvard Art Museum's [website](https://www.harvardartmuseums.org/collections/api).
 
 Fork and clone this repository
 Run `bundle install` in terminal
@@ -34,6 +34,6 @@ From the main menu, it is not possible to exit the program by entering `exit`. T
 We welcome contributions from outside contributors. Feel free to submit a pull request describing any proposed improvements.
 
 ## License:
-This software is available under the [MIT License] (https://opensource.org/licenses/MIT).
+This software is available under the [MIT License](https://opensource.org/licenses/MIT).
 
-Please also refer to the terms of use in the Harvard Art Museum API's [documentation] (https://github.com/harvardartmuseums/api-docs/blob/master/README.md).
+Please also refer to the terms of use in the Harvard Art Museum API's [documentation](https://github.com/harvardartmuseums/api-docs/blob/master/README.md).
